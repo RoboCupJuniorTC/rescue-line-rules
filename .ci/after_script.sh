@@ -44,4 +44,4 @@ git commit -m "Update GitHub Pages $TRAVIS_COMMIT_RANGE"
 git push -q -f "https://$GITHUB_USERNAME:$GITHUB_API_KEY@github.com/$TRAVIS_REPO_SLUG" gh-pages
 
 pip install requests
-echo "See what the rules would look like in [the last draft](https://robocupjuniortc.github.io/rescue-line-rules/$TRAVIS_BRANCH/rules.html)!" | python ../.ci/travis_bot.py
+echo "See what the rules would look like in [the last draft](https://robocupjuniortc.github.io/rescue-rules/$TRAVIS_BRANCH/rules.html)!" | python ../.ci/travis_bot.py
