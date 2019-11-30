@@ -1,0 +1,39 @@
+language: python
+
+dist: bionic
+
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker pull asciidoctor/docker-asciidoctor
+  - docker pull dxjoke/tectonic-docker
+  - sudo apt-get install dblatex xzdec texlive-generic-recommended texlive-fonts-extra
+
+cache:
+  directories:
+    - /tmp/texlive
+    - $HOME/.texlive
+
+script:
+  - cp rules.adoc _rules.adoc
+  - python .ci/criticmarkup_to_adoc.py _rules.adoc > rules.adoc
+  - docker run -v $TRAVIS_BUILD_DIR:/documents/ asciidoctor/docker-asciidoctor asciidoctor rules.adoc
+  - docker run -v $TRAVIS_BUILD_DIR:/documents/ asciidoctor/docker-asciidoctor asciidoctor -b docbook rules.adoc
+  - dblatex -T db2latex rules.xml -t tex --texstyle=./manual.sty -p custom.xsl
+  - cat rules.tex | awk 'f;/\\mainmatter/{f=1}'  > rules_without_preamble.tex
+  - cat preamble.tex rules_without_preamble.tex > rules.tex
+  - texliveonfly rules.tex
+  - pdflatex rules.tex
+  - pdflatex rules.tex
+
+after_error:
+  - docker logs asciidoc-to-html
+
+after_failure:
+  - docker logs asciidoc-to-html
+
+after_script:
+  - ./.ci/after_script.sh
