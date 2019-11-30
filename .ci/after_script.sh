@@ -6,7 +6,7 @@
 set -e
 
 TEX_DIRECTORY='tex/'
-TEX_FILENAME='rules'
+TEX_FILENAME=$1
 COMMIT_USERNAME='Travis the AsciiDoc builder'
 COMMIT_EMAIL='travis@travis.ai'
 
