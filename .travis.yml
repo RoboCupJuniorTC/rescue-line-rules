@@ -18,7 +18,8 @@ cache:
     - $HOME/.texlive
 
 script:
-  - ./.ci/make_rules.sh rules-line
+  - ./.ci/make_rules.sh rules_line
+  - ./.ci/make_rules.sh rules_maze
 
 after_error:
   - docker logs asciidoc-to-html
@@ -27,4 +28,6 @@ after_failure:
   - docker logs asciidoc-to-html
 
 after_script:
-  - ./.ci/after_script.sh rules-line
+  - ./.ci/after_script.sh rules_line
+  - ./.ci/after_script.sh rules_maze
+
